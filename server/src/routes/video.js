@@ -8,12 +8,13 @@ function getVideoRoutes() {
   const router = express.Router();
 
   router.get('/', getRecommendedVideos);
+  router.post('/', protect, addVideo);
+
   router.get('/trending', getTrendingVideos);
   router.get('/search', searchVideos);
+
   router.get('/:videoId', getAuthUser, getVideo);
   router.delete('/:videoId', protect, deleteVideo);
-
-  router.post('/', protect, addVideo);
   router.get('/:videoId/view', getAuthUser, addVideoView);
   router.get('/:videoId/like', protect, likeVideo);
   router.get('/:videoId/dislike', protect, dislikeVideo);
@@ -23,7 +24,7 @@ function getVideoRoutes() {
   return router;
 }
 
-async function getVideoViews(videos) {
+export async function getVideoViews(videos) {
   for (const video of videos) {
     const views = await prisma.view.count({
       where: {
@@ -79,7 +80,7 @@ async function getTrendingVideos(req, res) {
 async function searchVideos(req, res, next) {
   if (!req.query.query) {
     return next({
-      message: 'Please enter a serach query',
+      message: 'Please enter a search query',
       statusCode: 400
     })
   }
