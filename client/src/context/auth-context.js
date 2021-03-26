@@ -8,7 +8,7 @@ export function AuthProvider({children}) {
 
   React.useEffect(() => {
     client.get('/auth/me')
-      .then(res => setUser(res.data))
+      .then(res => setUser(res.data.user))
   }, []);
 
   return (

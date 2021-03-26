@@ -6,6 +6,7 @@ import { AppsIcon, HamburgerIcon, LogoIcon, SettingsIcon } from "./Icons";
 import Search from "./Search";
 import { useAuth } from "../context/auth-context";
 import UserDropdown from "./UserDropdown";
+import UploadVideo from "./UploadVideo";
 
 function Navbar({toggleSidebarOpen}) {
   const user = useAuth();
@@ -30,10 +31,10 @@ function Navbar({toggleSidebarOpen}) {
 
       <ul>
         <li>
-          <AppsIcon />
+          {user ? <UploadVideo/> : <AppsIcon />}
         </li>
         <li>
-          <SettingsIcon />
+          {user ? <AppsIcon /> : <SettingsIcon />}
         </li>
         <li>
           {" "}
