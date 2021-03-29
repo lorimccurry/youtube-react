@@ -9,7 +9,7 @@ import { ReactQueryDevtools } from 'react-query-devtools';
 
 const config = {
   queries: {
-    refetchWindowFocus: false,
+    refetchOnWindowFocus: false,
     retry(failureCount, error) {
       if (error.status === 404) return false;
       else if (failureCount < 2) return true;
