@@ -1,10 +1,9 @@
 import React from 'react';
-import { isError, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 import ErrorMessage from '../components/ErrorMessage';
 import VideoCard from '../components/VideoCard';
 import HomeSkeleton from '../skeletons/HomeSkeleton';
 import Wrapper from '../styles/Home';
-import { SkeletonLine } from '../styles/Skeleton';
 import VideoGrid from '../styles/VideoGrid';
 import { client } from '../utils/api-client';
 

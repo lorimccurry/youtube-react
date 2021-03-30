@@ -5,11 +5,10 @@ import { client } from '../utils/api-client';
 const AuthContext = React.createContext(null);
 
 export function AuthProvider({ children }) {
-  const { data } = useQuery('AuthProvider', () => {
+  const data = useQuery('AuthProvider', () => {
     client.get('/auth/me').then((res) => res.data.user);
   });
 
-  // @ts-ignore
   const user = data || null;
 
   return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;

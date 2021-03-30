@@ -1,22 +1,18 @@
-import { Menu, MenuButton, MenuItem, MenuList } from "@reach/menu-button";
-import "@reach/menu-button/styles.css";
-import React from "react";
-import { useHistory } from "react-router";
-import Avatar from "../styles/Avatar";
-import { signoutUser } from "../utils/api-client";
-import { ChannelIcon, SignoutIcon } from "./Icons";
+import { Menu, MenuButton, MenuItem, MenuList } from '@reach/menu-button';
+import '@reach/menu-button/styles.css';
+import React from 'react';
+import { useHistory } from 'react-router';
+import Avatar from '../styles/Avatar';
+import { signoutUser } from '../utils/api-client';
+import { ChannelIcon, SignoutIcon } from './Icons';
 
-function UserDropdown({user}) {
+function UserDropdown({ user }) {
   const history = useHistory();
 
   return (
     <Menu>
       <MenuButton>
-        <Avatar
-          className="pointer"
-          src={user.avatar}
-          alt={user.username}
-        />
+        <Avatar className="pointer" src={user.avatar} alt={user.username} />
       </MenuButton>
       <MenuList>
         <MenuItem onSelect={() => history.push(`/channel/${user.id}`)}>
