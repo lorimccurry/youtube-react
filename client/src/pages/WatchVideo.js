@@ -1,16 +1,32 @@
 // @ts-nocheck
-import React from "react";
-import AddComment from "../components/AddComment";
-import { DislikeIcon, LikeIcon } from "../components/Icons";
-import NoResults from "../components/NoResults";
-import VideoPlayer from "../components/VideoPlayer";
-import Button from "../styles/Button";
-import Wrapper from "../styles/WatchVideo";
+import React from 'react';
+import { client } from '../utils/api-client';
+import { useQuery } from 'react-query';
+import { useParams } from 'react-router-dom';
+import AddComment from '../components/AddComment';
+import { DislikeIcon, LikeIcon } from '../components/Icons';
+import NoResults from '../components/NoResults';
+import VideoPlayer from '../components/VideoPlayer';
+import Button from '../styles/Button';
+import Wrapper from '../styles/WatchVideo';
+import Skeleton from '../skeletons/WatchVideoSkeleton';
+import { formatCreatedAt } from '../utils/date';
 
 function WatchVideo() {
-  const is404 = true;
+  const { videoId } = useParams();
+  const { data: video, isLoading } = useQuery(['WatchVideo', videoId], () => {
+    return client.get(`/videos/${videoId}`).then((res) => {
+      console.log(res.data.video, 'insideVideo');
+      return res.data.video;
+    });
+  });
 
-  if (is404) {
+  console.log(video, 'video 2');
+
+  if (isLoading) {
+    return <Skeleton />;
+  }
+  if (!isLoading && !video) {
     return (
       <NoResults
         title="Page not found"
@@ -20,27 +36,30 @@ function WatchVideo() {
   }
 
   return (
-    <Wrapper filledLike={true} filledDislike={false}>
+    <Wrapper
+      filledLike={video && video.isLiked}
+      filledDislike={video && video.isDisliked}
+    >
       <div className="video-container">
         <div className="video">
-          <VideoPlayer />
+          {!isLoading && <VideoPlayer video={video} />}
         </div>
 
         <div className="video-info">
-          <h3>Title</h3>
+          <h3>{video.title}</h3>
 
           <div className="video-info-stats">
             <p>
-              <span>Views views</span> <span>•</span>{" "}
-              <span>Premiered createdAt</span>
+              <span>{video.views} views</span> <span>•</span>{' '}
+              <span>Premiered {formatCreatedAt(video.createdAt)}</span>
             </p>
 
             <div className="likes-dislikes flex-row">
               <p className="flex-row like">
-                <LikeIcon /> <span>Likes Count</span>
+                <LikeIcon /> <span>{video.likesCount}</span>
               </p>
-              <p className="flex-row dislike" style={{ marginLeft: "1rem" }}>
-                <DislikeIcon /> <span>Dislikes Count</span>
+              <p className="flex-row dislike" style={{ marginLeft: '1rem' }}>
+                <DislikeIcon /> <span>{video.dislikesCount}</span>
               </p>
             </div>
           </div>
@@ -51,24 +70,30 @@ function WatchVideo() {
             <div className="channel-info flex-row">
               <img
                 className="avatar md"
-                src="https://dummyimage.com/100x100"
-                alt="channel avatar"
+                src={video.user.avatar}
+                alt={`${video.user.userName} channel avatar`}
               />
               <div className="channel-info-meta">
-                <h4>Username</h4>
+                <h4>video.userName</h4>
                 <span className="secondary small">
-                  SubscribersCount subscribers
+                  {video.subscribersCount} subscribers
                 </span>
               </div>
             </div>
 
-            <Button>Subscribe</Button>
+            {!video.isVideoMine && !video.isSubscribed && (
+              <Button>Subscribe</Button>
+            )}
+
+            {!video.isVideoMine && video.isSubscribed && (
+              <Button>Subscribed</Button>
+            )}
           </div>
 
-          <p>Description</p>
+          <p>{video.description}</p>
         </div>
 
-        <AddComment />
+        <AddComment video={video} />
       </div>
 
       <div className="related-videos">

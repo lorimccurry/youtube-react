@@ -1,9 +1,9 @@
-import { Menu, MenuButton, MenuItem, MenuList } from "@reach/menu-button";
-import "@reach/menu-button/styles.css";
-import React from "react";
-import { DeleteIcon, SettingsIcon } from "./Icons";
+import { Menu, MenuButton, MenuItem, MenuList } from '@reach/menu-button';
+import '@reach/menu-button/styles.css';
+import React from 'react';
+import { DeleteIcon, SettingsIcon } from './Icons';
 
-function DeleteCommentDropdown() {
+function DeleteCommentDropdown({ comment }) {
   const isCommentAuthor = true;
 
   if (isCommentAuthor) {
