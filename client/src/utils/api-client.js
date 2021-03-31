@@ -32,14 +32,25 @@ export async function addVideoView(videoId) {
   await queryCache.invalidateQueries('History');
 }
 
-export async function addComment() {}
+export async function addComment({ video, comment }) {
+  await client.post(`/videos/${video.id}/comments`, { text: comment });
+  await queryCache.invalidateQueries(['WatchVideo', video.id]);
+}
 
 export async function addVideo(video) {
   await client.post('/videos', video);
   await queryCache.invalidateQueries('Channel');
 }
 
-export async function toggleSubscribeUser() {}
+export async function toggleSubscribeUser(userId) {
+  await client.get(`/users/${userId}/toggle-subscribe`);
+  await queryCache.invalidateQueries('Channel');
+  await queryCache.invalidateQueries('Channels');
+  await queryCache.invalidateQueries('Subscriptions');
+  await queryCache.invalidateQueries('AuthProvider');
+  await queryCache.invalidateQueries('WatchVideo');
+  await queryCache.invalidateQueries('SearchResults');
+}
 
 export async function likeVideo(videoId) {
   await client.get(`/videos/${videoId}/like`);

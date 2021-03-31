@@ -1,6 +1,11 @@
 // @ts-nocheck
 import React from 'react';
-import { client, dislikeVideo, likeVideo } from '../utils/api-client';
+import {
+  client,
+  dislikeVideo,
+  likeVideo,
+  toggleSubscribeUser,
+} from '../utils/api-client';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import AddComment from '../components/AddComment';
@@ -12,9 +17,11 @@ import Wrapper from '../styles/WatchVideo';
 import Skeleton from '../skeletons/WatchVideoSkeleton';
 import { formatCreatedAt } from '../utils/date';
 import VideoCard from '../components/VideoCard';
+import useAuthAction from '../hooks/use-auth-action';
 
 function WatchVideo() {
   const { videoId } = useParams();
+  const handleAuthAction = useAuthAction();
   const { data: video, isLoading: isLoadingVideo } = useQuery(
     ['WatchVideo', videoId],
     () => client.get(`/videos/${videoId}`).then((res) => res.data.video)
@@ -37,11 +44,15 @@ function WatchVideo() {
   }
 
   function handleLikeVideo(videoId) {
-    likeVideo(videoId);
+    handleAuthAction(likeVideo, videoId);
   }
 
   function handleDislikeVideo(videoId) {
-    dislikeVideo(videoId);
+    handleAuthAction(dislikeVideo, videoId);
+  }
+
+  function toggleSubscribe(userId) {
+    handleAuthAction(toggleSubscribeUser, userId);
   }
 
   return (
@@ -85,7 +96,7 @@ function WatchVideo() {
                 alt={`${video.user.userName} channel avatar`}
               />
               <div className="channel-info-meta">
-                <h4>video.userName</h4>
+                <h4>{video.user.username}</h4>
                 <span className="secondary small">
                   {video.subscribersCount} subscribers
                 </span>
@@ -93,11 +104,15 @@ function WatchVideo() {
             </div>
 
             {!video.isVideoMine && !video.isSubscribed && (
-              <Button>Subscribe</Button>
+              <Button onClick={() => toggleSubscribe(video.user.id)}>
+                Subscribe
+              </Button>
             )}
 
             {!video.isVideoMine && video.isSubscribed && (
-              <Button>Subscribed</Button>
+              <Button grey onClick={() => toggleSubscribe(video.user.id)}>
+                Subscribed
+              </Button>
             )}
           </div>
 
