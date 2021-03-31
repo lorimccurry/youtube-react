@@ -9,16 +9,16 @@ export async function getAuthUser(req, res, next) {
     return next();
   }
 
-  const token = req.headers.authorization;
+  const token = req.cookies.token;
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
   const user = await prisma.user.findUnique({
     where: {
-      id: decoded.id
+      id: decoded.id,
     },
     include: {
-      videos: true
-    }
+      videos: true,
+    },
   });
 
   req.user = user;
@@ -29,8 +29,8 @@ export async function protect(req, res, next) {
   if (!req.cookies.token) {
     return next({
       message: 'You need to be logged in to visit this route.',
-      statusCode: 401
-    })
+      statusCode: 401,
+    });
   }
 
   try {
@@ -39,19 +39,19 @@ export async function protect(req, res, next) {
 
     const user = await prisma.user.findUnique({
       where: {
-        id: decoded.id
+        id: decoded.id,
       },
       include: {
-        videos: true
-      }
+        videos: true,
+      },
     });
 
     req.user = user;
     next();
   } catch (error) {
     next({
-      message: "You need to be logged in to visit this route.",
-      statusCode: 401
+      message: 'You need to be logged in to visit this route.',
+      statusCode: 401,
     });
   }
 }

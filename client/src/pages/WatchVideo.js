@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React from 'react';
-import { client } from '../utils/api-client';
+import { client, dislikeVideo, likeVideo } from '../utils/api-client';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import AddComment from '../components/AddComment';
@@ -11,28 +11,37 @@ import Button from '../styles/Button';
 import Wrapper from '../styles/WatchVideo';
 import Skeleton from '../skeletons/WatchVideoSkeleton';
 import { formatCreatedAt } from '../utils/date';
+import VideoCard from '../components/VideoCard';
 
 function WatchVideo() {
   const { videoId } = useParams();
-  const { data: video, isLoading } = useQuery(['WatchVideo', videoId], () => {
-    return client.get(`/videos/${videoId}`).then((res) => {
-      console.log(res.data.video, 'insideVideo');
-      return res.data.video;
-    });
-  });
+  const { data: video, isLoading: isLoadingVideo } = useQuery(
+    ['WatchVideo', videoId],
+    () => client.get(`/videos/${videoId}`).then((res) => res.data.video)
+  );
+  const { data: next, isLoading: isLoadingNext } = useQuery(
+    ['WatchVideo', 'Up Next'],
+    () => client.get('/videos').then((res) => res.data.videos)
+  );
 
-  console.log(video, 'video 2');
-
-  if (isLoading) {
+  if (isLoadingVideo || isLoadingNext) {
     return <Skeleton />;
   }
-  if (!isLoading && !video) {
+  if (!isLoadingVideo && !video) {
     return (
       <NoResults
         title="Page not found"
         text="The page you are looking for is not found or it may have been removed"
       />
     );
+  }
+
+  function handleLikeVideo(videoId) {
+    likeVideo(videoId);
+  }
+
+  function handleDislikeVideo(videoId) {
+    dislikeVideo(videoId);
   }
 
   return (
@@ -42,7 +51,7 @@ function WatchVideo() {
     >
       <div className="video-container">
         <div className="video">
-          {!isLoading && <VideoPlayer video={video} />}
+          {!isLoadingVideo && <VideoPlayer video={video} />}
         </div>
 
         <div className="video-info">
@@ -56,10 +65,12 @@ function WatchVideo() {
 
             <div className="likes-dislikes flex-row">
               <p className="flex-row like">
-                <LikeIcon /> <span>{video.likesCount}</span>
+                <LikeIcon onClick={() => handleLikeVideo(video.id)} />
+                <span>{video.likesCount}</span>
               </p>
               <p className="flex-row dislike" style={{ marginLeft: '1rem' }}>
-                <DislikeIcon /> <span>{video.dislikesCount}</span>
+                <DislikeIcon onClick={() => handleDislikeVideo(video.id)} />
+                <span>{video.dislikesCount}</span>
               </p>
             </div>
           </div>
@@ -98,7 +109,12 @@ function WatchVideo() {
 
       <div className="related-videos">
         <h3 className="up-next">Up Next</h3>
-        Up Next Videos
+        {next
+          .filter((v) => v.id !== video.id)
+          .slice(0, 10)
+          .map((video) => (
+            <VideoCard key={video.id} hideAvatar video={video} />
+          ))}
       </div>
     </Wrapper>
   );
