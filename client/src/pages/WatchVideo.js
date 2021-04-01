@@ -7,7 +7,7 @@ import {
   toggleSubscribeUser,
 } from '../utils/api-client';
 import { useQuery } from 'react-query';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import AddComment from '../components/AddComment';
 import { DislikeIcon, LikeIcon } from '../components/Icons';
 import NoResults from '../components/NoResults';
@@ -96,7 +96,11 @@ function WatchVideo() {
                 alt={`${video.user.userName} channel avatar`}
               />
               <div className="channel-info-meta">
-                <h4>{video.user.username}</h4>
+                <h4>
+                  <Link to={`/channel/${video.user.id}`}>
+                    {video.user.username}
+                  </Link>
+                </h4>
                 <span className="secondary small">
                   {video.subscribersCount} subscribers
                 </span>
