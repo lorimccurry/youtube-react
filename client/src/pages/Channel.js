@@ -45,8 +45,6 @@ function Channel() {
   if (isLoading) return <Skeleton />;
   if (isError) return <ErrorMessage error={error} />;
 
-  console.log({ channel });
-
   if (!user) {
     return (
       <SignUpCard
@@ -60,7 +58,7 @@ function Channel() {
   return (
     <Wrapper editProfile={channel.isMe}>
       <div className="cover">
-        <img src="https://dummyimage.com/600x200" alt="channel-cover" />
+        <img src={channel.cover} alt="channel-cover" />
       </div>
 
       <div className="header-tabs">
