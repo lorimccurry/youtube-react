@@ -1,2 +1,2 @@
 release: npx prisma generate
-release: npx prisma migrate deploy
+release: npx prisma migrate up --experimental
