@@ -15,7 +15,7 @@
     "generate": "prisma generate",
     "studio": "prisma studio",
     "postinstall": "cd client && npm install && npm run build",
-    "heroku-postbuild": "prisma introspect && prisma generate"
+    "heroku-cleanup": "prisma introspect && prisma generate"
   },
   "cacheDirectories": [
     "node_modules",
