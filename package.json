@@ -14,7 +14,8 @@
     "up": "prisma migrate --experimental up",
     "generate": "prisma generate",
     "studio": "prisma studio",
-    "postinstall": "cd client && npm install && npm run build"
+    "postinstall": "cd client && npm install && npm run build",
+    "heroku-postbuild": "prisma introspect && prisma generate"
   },
   "cacheDirectories": [
     "node_modules",
