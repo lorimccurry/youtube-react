@@ -47,3 +47,12 @@ npm run dev
 - [Prisma Documentations](https://prisma.io)
 - [Cloudinary Documentation](https://cloudinary.com/documentation/)
 - [React Query Documentation](https://react-query.tanstack.com)
+
+## Reflections / Learnings
+
+- Exposure to Prisma, React Query, Cloudinary
+- Building full stack app
+- Digging into docs: Node, Prisma
+- I miss typescript and created a branch to convert project from js
+- I miss tests - doesn't feel stable...it is just a tut
+- I want to look for tuts that let you build from scratch. There was too much pre-made boilerplate with this one.
