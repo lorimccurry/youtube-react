@@ -51,8 +51,12 @@ npm run dev
 ## Reflections / Learnings
 
 - Exposure to Prisma, React Query, Cloudinary
+- Great read on ORMs and [Data Mapper](https://en.wikipedia.org/wiki/Data_mapper_pattern)/[Active Record](https://en.wikipedia.org/wiki/Active_record_pattern) patterns, and a new pattern of schema file mapping employed by Prisma: [JS/TS ORMs](https://www.sitepoint.com/javascript-typescript-orms/)
 - Building full stack app
 - Digging into docs: Node, Prisma
-- I miss typescript and created a branch to convert project from js
-- I miss tests - doesn't feel stable...it is just a tut
-- I want to look for tuts that let you build from scratch. There was too much pre-made boilerplate with this one.
+
+### Improvements:
+
+- Typescript: I created a branch to convert project from js (basic setup/flow)
+- Tests - not as stable, but is just a tut
+- Look for tuts that let you build from scratch. There was too much pre-made boilerplate with this one.
