@@ -1,21 +1,23 @@
 {
   "compilerOptions": {
-    "allowJs": true,
-    "checkJs": true,
-    "noImplicitAny": false,
+    "baseUrl": "./src",
+    "rootDir": "src",
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "skipLibCheck": true,
+    "allowJs": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
-    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,
     "module": "esnext",
     "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
     "noEmit": true,
     "jsx": "react"
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }
